@@ -166,6 +166,7 @@ mlflow ui
 ```
 
 # 📁 Project Structure
+```
 
 ├── app.py              # FastAPI REST API (inference endpoint)
 ├── model.py            # Training pipeline (preprocessing + SMOTE + model + MLflow)
@@ -179,7 +180,7 @@ mlflow ui
 └── data/
     └── loan_data.csv   # Input dataset
 ```
-```
+
 # 🏆 Conclusion
 
 This project demonstrates a complete production-ready ML pipeline, including:
