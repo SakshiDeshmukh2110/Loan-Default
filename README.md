@@ -1,173 +1,20 @@
 # 🏦 Loan Default Prediction
 
-Predicting the likelihood of a borrower defaulting on a loan using machine learning, with full MLflow tracking, SHAP explainability, and data drift detection.
+> Predicting the likelihood of a borrower defaulting on a loan using machine learning, with full MLflow tracking, SHAP explainability, and data drift detection.
 
-# 📋 Problem Statement
+---
+
+## 📋 Problem Statement
 
 Defaulted loans significantly disrupt the financial health of institutions, leading to substantial losses and reputational damage. Traditional risk assessment methods (credit score, income, collateral) fail to capture complex patterns. This project builds a robust ML pipeline to predict loan defaults.
 
-# 🎯 Objectives
+---
 
-Build a robust loan default prediction model
-Handle missing values, outliers, and class imbalance
-Perform feature engineering for better predictions
-Track experiments using MLflow
-Implement model explainability using SHAP
-Monitor data drift using PSI, CSI, and KS tests
-Deploy model using FastAPI + Docker
-
-# ⚙️ Tech Stack
-
-Language: Python
-Libraries: Pandas, NumPy, Scikit-learn, Imbalanced-learn
-Model: Gradient Boosting, Logistic Regression
-Tracking: MLflow
-Explainability: SHAP
-API: FastAPI + Uvicorn
-Deployment: Docker
-
-# 🔄 End-to-End Pipeline
-
-``` Data → Preprocessing → Feature Engineering → SMOTE → Model Training``  
-→ MLflow Tracking → SHAP Explainability → Drift Detection → API → Docker```
-
-# 🧹 Data Preprocessing
-
-Missing values handled using median (numeric) and mode (categorical)
-Outliers capped using IQR method
-Categorical variables encoded using Label Encoding
-ID-like columns removed
-
-# ⚡ Feature Engineering
-
-Loan to Income Ratio
-Monthly Payment Estimate
-Credit Score Flag (good_credit ≥ 700)
-Income per Dependent
-
-# ⚖️ Handling Imbalanced Data
-
-Applied SMOTE (Synthetic Minority Oversampling Technique)
-Balanced class distribution before training
-Improved recall for default class
-
-# 🤖 Models Used
-
-| Model                    | Purpose               |
-| ------------------------ | --------------------- |
-| Logistic Regression      | Baseline              |
-| Gradient Boosting        | Final optimized model |
-| Random Forest (optional) | Comparison            |
-
-
-
-These features significantly improved model performance.
-
-# 📊 Exploratory Data Analysis (EDA)
-
-Checked missing values and feature distributions
-Detected outliers using IQR method
-Analyzed relationship between features and target
-Observed class imbalance in default vs non-default
-
-# 📈 Evaluation Metrics
-
-Accuracy
-Precision
-Recall
-F1 Score
-ROC-AUC
-
-# 📌 Key Insights:
-
-Gradient Boosting achieved strong ROC-AUC performance
-SMOTE improved recall significantly
-Logistic Regression helped in baseline comparison
-
-
-# 🔬 MLflow Experiment Tracking
-
-Logged parameters, metrics, and trained models
-Compared multiple experiments (default vs tuned models)
-Stored SHAP plots and drift reports
-
-# 📌 Experiments include:
-
-Default Gradient Boosting
-Tuned Gradient Boosting
-
-# 🧠 Explainability (SHAP)
-
-Used SHAP to interpret feature importance
-Generated:
-SHAP Summary Plot
-SHAP Feature Importance (Bar Plot)
-Saved results as shap_importance.csv
-
-# 📉 Data Drift Monitoring
-
-PSI (Population Stability Index) → prediction drift
-CSI (Characteristic Stability Index) → feature drift
-KS Test → statistical distribution difference
-
-# 📌 Output:
-
-csi_results.csv
-ks_results.csv
-Drift plots logged in MLflow
-
-# 🌐 API Deployment (FastAPI)
-
-Endpoints:
-
-GET /health → check model status
-POST /predict → single prediction
-POST /predict_batch → batch predictions
-GET /feature_importance → SHAP insights
-
-Example Request:
-
-```{
-  "income_annum": 900000,
-  "loan_amount": 2000000,
-  "loan_term": 18,
-  "cibil_score": 720
-}
-```
-
-Example Response:
-
-```loan-default-prediction/
-```{
-  "default_probability": 0.14,
-  "prediction": "No Default",
-  "risk_level": "LOW",
-  "confidence": 0.85
-}
-```
-# 📌 Includes:
-
-Risk classification (LOW / MEDIUM / HIGH)
-Confidence score
-# 🐳 Docker Deployment
+## 🏗️ Project Structure
 
 ```
-docker build -t loan-default-api .
-docker run -p 8000:8000 loan-default-api
-```
-# ▶️ How to Run Project
-
-```pip install -r requirements.txt
-python model.py        # Train model
-python explain.py      # Generate SHAP
-python drift.py        # Run drift detection
-uvicorn app:app --reload
-mlflow ui
-```
-
-# 📁 Project Structure
-```
-
+loan-default-prediction/
+│
 ├── app.py              # FastAPI REST API (inference endpoint)
 ├── model.py            # Training pipeline (preprocessing + SMOTE + model + MLflow)
 ├── drift.py            # Data drift detection (PSI, CSI, KS) logged to MLflow
@@ -181,19 +28,216 @@ mlflow ui
     └── loan_data.csv   # Input dataset
 ```
 
-# 🏆 Conclusion
+---
 
-This project demonstrates a complete production-ready ML pipeline, including:
+## 🚀 Quick Start
 
-✔ Data preprocessing
-✔ Feature engineering
-✔ Handling class imbalance (SMOTE)
-✔ Model training & evaluation
-✔ MLflow experiment tracking
-✔ SHAP explainability
-✔ Data drift monitoring
-✔ API deployment with FastAPI
-✔ Docker containerization
+### 1. Clone & Install
 
-Presented by:
-Sakshi Deshmukh
+```bash
+git clone https://github.com/<your-username>/loan-default-prediction.git
+cd loan-default-prediction
+pip install -r requirements.txt
+```
+
+### 2. Add Dataset
+
+Place your `loan_data.csv` inside the `data/` folder.
+
+### 3. Train the Model (runs 2 MLflow experiments)
+
+```bash
+python model.py
+```
+
+### 4. Generate SHAP Explanations
+
+```bash
+python explain.py
+```
+
+### 5. Run Drift Detection
+
+```bash
+python drift.py
+```
+
+### 6. Start the API
+
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+```
+
+API docs available at: `http://localhost:8000/docs`
+
+### 7. View MLflow UI
+
+```bash
+mlflow ui --host 0.0.0.0 --port 5000
+```
+
+Open: `http://localhost:5000`
+
+---
+
+## 🐳 Docker
+
+### Build & Run
+
+```bash
+# Train model first
+python model.py
+
+# Build image
+docker build -t loan-default-api .
+
+# Run API
+docker run -p 8000:8000 loan-default-api
+
+# Run MLflow UI (separate container)
+docker run -p 5000:5000 loan-default-api mlflow ui --host 0.0.0.0 --port 5000
+```
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/health` | Health check |
+| `POST` | `/predict` | Single loan prediction |
+| `POST` | `/predict_batch` | Batch predictions |
+| `GET` | `/feature_importance` | Top SHAP features |
+
+### Example Request
+
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "no_of_dependents": 2,
+    "education": "Graduate",
+    "self_employed": "No",
+    "income_annum": 900000,
+    "loan_amount": 2000000,
+    "loan_term": 18,
+    "cibil_score": 720,
+    "residential_assets_value": 3000000,
+    "commercial_assets_value": 500000,
+    "luxury_assets_value": 200000,
+    "bank_asset_value": 150000
+  }'
+```
+
+### Example Response
+
+```json
+{
+  "default_probability": 0.1423,
+  "prediction": "No Default",
+  "risk_level": "LOW",
+  "confidence": 0.8577
+}
+```
+
+---
+
+## 🔬 ML Pipeline
+
+```
+Raw Data
+   │
+   ▼
+Missing Value Imputation (Median / Mode)
+   │
+   ▼
+Outlier Capping (IQR × 1.5)
+   │
+   ▼
+Feature Engineering
+  ├── loan_to_income
+  ├── monthly_payment_est
+  ├── good_credit (CIBIL ≥ 700)
+  ├── income_per_dependent
+  └── total_assets
+   │
+   ▼
+Label Encoding (categorical features)
+   │
+   ▼
+SMOTE (handle class imbalance)
+   │
+   ▼
+StandardScaler
+   │
+   ▼
+Gradient Boosting Classifier
+   │
+   ▼
+MLflow Logging (metrics + artifacts + model)
+```
+
+---
+
+## 📊 MLflow Experiments
+
+Two experiments are run with different hyperparameters:
+
+| Parameter | Experiment 1 | Experiment 2 |
+|-----------|-------------|-------------|
+| `n_estimators` | 100 | 200 |
+| `learning_rate` | 0.1 | 0.05 |
+| `max_depth` | 3 | 5 |
+| `subsample` | 1.0 | 0.8 |
+
+### Tracked Metrics
+- Accuracy, Precision, Recall, F1-Score, ROC-AUC
+- Cross-validation AUC (mean ± std)
+- PSI (Population Stability Index)
+- CSI per feature (Characteristic Stability Index)
+- KS statistic per feature
+- SHAP feature importances
+
+---
+
+## 🧠 Explainability (SHAP)
+
+SHAP (SHapley Additive exPlanations) is used to explain model predictions:
+
+- **Summary Plot**: Shows feature impact distribution across all samples
+- **Bar Chart**: Mean absolute SHAP value per feature
+- All artifacts logged to MLflow
+
+---
+
+## 📉 Data Drift Detection
+
+| Method | What it measures | Threshold |
+|--------|-----------------|-----------|
+| **PSI** | Overall prediction score shift | < 0.1 OK, 0.1–0.2 Warning, > 0.2 Drift |
+| **CSI** | Per-feature distribution shift | Same as PSI |
+| **KS Test** | Statistical distribution difference | p-value < 0.05 → Drift |
+
+---
+
+## 🛠️ Tech Stack
+
+- **ML**: scikit-learn, imbalanced-learn, XGBoost
+- **Tracking**: MLflow
+- **Explainability**: SHAP
+- **API**: FastAPI + Uvicorn
+- **Deployment**: Docker
+- **Data**: pandas, numpy, scipy
+
+---
+
+## 📸 Screenshots
+
+### MLflow Experiment Tracking
+*(Add screenshots of your MLflow UI here)*
+
+### SHAP Summary Plot
+*(Add shap_summary.png here)*
+
+### API Swagger UI
+*(Add screenshot of /docs here)*
