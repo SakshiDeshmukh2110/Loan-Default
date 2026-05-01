@@ -167,7 +167,6 @@ mlflow ui
 
 # 📁 Project Structure
 
-│
 ├── app.py              # FastAPI REST API (inference endpoint)
 ├── model.py            # Training pipeline (preprocessing + SMOTE + model + MLflow)
 ├── drift.py            # Data drift detection (PSI, CSI, KS) logged to MLflow
